@@ -19,7 +19,7 @@
         }
 
         .container h2 {
-            font-size: 30px;
+            font-size: 20px;
             text-align: center;
             color: white;
         }
@@ -30,15 +30,15 @@
         }
 
         label {
-            font-size: 25px;
+            font-size: 15px;
             color: white;
         }
 
         input[type="number"] {
-            width: 50%;
+            width: 55%;
             padding: 5px;
             margin-bottom: 10px;
-            font-size: 25px;
+            font-size: 15px;
             border: 3px gray solid;
             border-radius: 15px;
             background-color: rgb(53, 53, 53);
@@ -60,7 +60,7 @@
 
         p {
             margin: 10px 0;
-            font-size: 25px;
+            font-size: 15px;
             text-align: end;
             color: white;
             display: inline-flex;
@@ -70,7 +70,7 @@
 
         span {
             margin-left: 10px;
-            font-size: 25px;
+            font-size: 15px;
             color: rgb(0, 186, 0);
             font-weight: 900;
             position: sticky;
@@ -83,6 +83,16 @@
             display: flex;
             align-items: center;
         }
+
+        .cajaFlex
+        {
+            display: grid;
+        }
+
+        .cajaAux
+        {
+            display: flex;
+        }
     </style>
 </head>
 
@@ -90,11 +100,12 @@
     <div class="container">
         <h2>Calculadora de Reformas</h2>
         <form id="paintingForm">
-            <div>
+            <div class="cajaAux">
+                <div class="cajaFlex">
                 <label for="metrosCuadrados">Metros Cuadrados <label style="color: gray;">(m2)</label></label>
                 <input type="number" id="metrosCuadrados" name="metrosCuadrados" step="any" step="0.01" max="99999.99"
                     required>
-
+                </div>
                 <p>Total: <span id="total" style="color: yellow !important;">0€</span></p>
 
             </div>
