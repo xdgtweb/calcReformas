@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Calculadora de Reformas</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans">
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: black;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .container h2 {
+            font-size: 30px;
+            text-align: center;
+            color: white;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 25px;
+            color: white;
+        }
+
+        input[type="number"] {
+            width: 50%;
+            padding: 5px;
+            margin-bottom: 10px;
+            font-size: 25px;
+            border: 3px gray solid;
+            border-radius: 15px;
+            background-color: rgb(53, 53, 53);
+            color: white;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 10px;
+            width: 25px;
+            height: 25px;
+            border: 3px solid green !important;
+            border-radius: 5px !important;
+        }
+
+        input[type="checkbox"]:checked {
+            background-color: green !important;
+            border: 3px solid green !important;
+        }
+
+        p {
+            margin: 10px 0;
+            font-size: 25px;
+            text-align: end;
+            color: white;
+            display: inline-flex;
+            position: sticky;
+            left: 100%;
+        }
+
+        span {
+            margin-left: 10px;
+            font-size: 25px;
+            color: rgb(0, 186, 0);
+            font-weight: 900;
+            position: sticky;
+            left: 100%;
+        }
+
+        .cajaSeparar {
+            margin-top: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Calculadora de Reformas</h2>
+        <form id="paintingForm">
+            <div>
+                <label for="metrosCuadrados">Metros Cuadrados <label style="color: gray;">(m2)</label></label>
+                <input type="number" id="metrosCuadrados" name="metrosCuadrados" step="any" step="0.01" max="99999.99"
+                    required>
+
+                <p>Total: <span id="total" style="color: yellow !important;">0€</span></p>
+
+            </div>
+            <br>
+            <div id="cajaOpciones">
+                <label>Faena:</label><br>
+                <div class="cajaSeparar">
+                    <input type="checkbox" id="blanco" name="opcion" value="6"> <label for="blanco">Pintar de
+                        blanco <label style="color: gray;">(6€)</label></label>
+                    <span id="blancoSep">0€</span><br>
+                </div>
+                <div class="cajaSeparar">
+                    <input type="checkbox" id="color" name="opcion" value="8"> <label for="color">Pintar a color <label
+                            style="color: gray;">(8€)</label></label>
+                    <span id="coloresSep">0€</span><br>
+                </div>
+                <div class="cajaSeparar">
+                    <input type="checkbox" id="dosColores" name="opcion" value="12"> <label for="dosColores">Pintar 2
+                        colores <label style="color: gray;">(12€)</label></label>
+                    <span id="dosColorSep">0€</span><br>
+                </div>
+                <div class="cajaSeparar">
+                    <input type="checkbox" id="paredes" name="opcion" value="10"> <label for="paredes">Lucir
+                        paredes <label style="color: gray;">(10€)</label></label>
+                    <span id="paredesSep">0€</span><br>
+                </div>
+                <div class="cajaSeparar">
+                    <input type="checkbox" id="gotele" name="opcion" value="16"> <label for="gotele">Quitar
+                        gotele <label style="color: gray;">(16€)</label></label>
+                    <span id="goteleSep">0€</span><br>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+    <script>
+        // Obtener elementos HTML
+        const metrosCuadradosInput = document.getElementById('metrosCuadrados');
+        const blancoCheckbox = document.getElementById('blanco');
+        const colorCheckbox = document.getElementById('color');
+        const dosColoresCheckbox = document.getElementById('dosColores');
+        const paredesCheckbox = document.getElementById('paredes');
+        const goteleCheckbox = document.getElementById('gotele');
+
+        // Obtener elementos para mostrar los precios
+        const blancoPrecioSpan = document.getElementById('blancoSep');
+        const colorPrecioSpan = document.getElementById('coloresSep');
+        const dosColoresPrecioSpan = document.getElementById('dosColorSep');
+        const paredesPrecioSpan = document.getElementById('paredesSep');
+        const gotelePrecioSpan = document.getElementById('goteleSep');
+
+        const totalSpan = document.getElementById('total');
+
+        // Función para calcular y mostrar el precio total
+        function calcularPrecioTotal() {
+            const metrosCuadrados = parseFloat(metrosCuadradosInput.value);
+
+            // Comprobar si metrosCuadrados es negativo
+            if (metrosCuadrados < 0) {
+                totalSpan.textContent = "xd";
+                return; // Salir de la función si es negativo
+            }
+
+            // Calcular los precios
+            const blancoPrecio = blancoCheckbox.checked ? metrosCuadrados * parseFloat(blancoCheckbox.value) : 0;
+            const colorPrecio = colorCheckbox.checked ? metrosCuadrados * parseFloat(colorCheckbox.value) : 0;
+            const dosColoresPrecio = dosColoresCheckbox.checked ? metrosCuadrados * parseFloat(dosColoresCheckbox.value) : 0;
+            const paredesPrecio = paredesCheckbox.checked ? metrosCuadrados * parseFloat(paredesCheckbox.value) : 0;
+            const gotelePrecio = goteleCheckbox.checked ? metrosCuadrados * parseFloat(goteleCheckbox.value) : 0;
+
+            // Función para formatear el precio con dos decimales, solo si hay decimales
+            function formatearPrecio(precio) {
+                return precio % 1 === 0 ? precio.toFixed(0) + '€' : precio.toFixed(2) + '€';
+            }
+
+            // Mostrar los precios
+            blancoPrecioSpan.textContent = blancoPrecio ? formatearPrecio(blancoPrecio) : '0€';
+            colorPrecioSpan.textContent = colorPrecio ? formatearPrecio(colorPrecio) : '0€';
+            dosColoresPrecioSpan.textContent = dosColoresPrecio ? formatearPrecio(dosColoresPrecio) : '0€';
+            paredesPrecioSpan.textContent = paredesPrecio ? formatearPrecio(paredesPrecio) : '0€';
+            gotelePrecioSpan.textContent = gotelePrecio ? formatearPrecio(gotelePrecio) : '0€';
+
+            // Calcular el precio total y mostrarlo
+            const precioTotal = blancoPrecio + colorPrecio + dosColoresPrecio + paredesPrecio + gotelePrecio;
+            totalSpan.textContent = precioTotal ? formatearPrecio(precioTotal) : '0€';
+
+            // Guardar valores en el almacenamiento local (localStorage)
+            localStorage.setItem('metrosCuadrados', metrosCuadrados);
+            localStorage.setItem('blancoCheckbox', blancoCheckbox.checked);
+            localStorage.setItem('colorCheckbox', colorCheckbox.checked);
+            localStorage.setItem('dosColoresCheckbox', dosColoresCheckbox.checked);
+            localStorage.setItem('paredesCheckbox', paredesCheckbox.checked);
+            localStorage.setItem('goteleCheckbox', goteleCheckbox.checked);
+        }
+
+
+
+        // Asignar el evento input a la función de cálculo para el input de metros cuadrados
+        metrosCuadradosInput.addEventListener('input', calcularPrecioTotal);
+
+        // Asignar el evento change a la función de cálculo para los elementos checkbox
+        blancoCheckbox.addEventListener('change', calcularPrecioTotal);
+        colorCheckbox.addEventListener('change', calcularPrecioTotal);
+        dosColoresCheckbox.addEventListener('change', calcularPrecioTotal);
+        paredesCheckbox.addEventListener('change', calcularPrecioTotal);
+        goteleCheckbox.addEventListener('change', calcularPrecioTotal);
+
+        // Recuperar valores del almacenamiento local y mostrarlos
+        const storedMetrosCuadrados = localStorage.getItem('metrosCuadrados');
+        if (storedMetrosCuadrados) {
+            metrosCuadradosInput.value = storedMetrosCuadrados;
+        }
+
+        const storedBlancoCheckbox = localStorage.getItem('blancoCheckbox');
+        if (storedBlancoCheckbox) {
+            blancoCheckbox.checked = storedBlancoCheckbox === 'true';
+        }
+
+        const storedColorCheckbox = localStorage.getItem('colorCheckbox');
+        if (storedColorCheckbox) {
+            colorCheckbox.checked = storedColorCheckbox === 'true';
+        }
+
+        const storedDosColoresCheckbox = localStorage.getItem('dosColoresCheckbox');
+        if (storedDosColoresCheckbox) {
+            dosColoresCheckbox.checked = storedDosColoresCheckbox === 'true';
+        }
+
+        const storedParedesCheckbox = localStorage.getItem('paredesCheckbox');
+        if (storedParedesCheckbox) {
+            paredesCheckbox.checked = storedParedesCheckbox === 'true';
+        }
+
+        const storedGoteleCheckbox = localStorage.getItem('goteleCheckbox');
+        if (storedGoteleCheckbox) {
+            goteleCheckbox.checked = storedGoteleCheckbox === 'true';
+        }
+
+        // Inicializar cálculo
+        calcularPrecioTotal();
+    </script>
+</body>
+
+</html>
